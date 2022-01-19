@@ -1,26 +1,44 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import styled from styled-Component;
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+// const Filtro = styled.div`
+// background-color: black;
+// display: Flex;
+// `
+
+class App extends React.Component{
+  render(){
+    return(
+      <div>
+        <div className='Header'>
+          <h1>Viajens Espaciais</h1>
+        </div>
+
+        <div>
+            <div className='BuscaPreço'>
+              <div>
+              <h4>Valor mínimo:</h4>
+              <input
+              placeholder='Min    R$1000,00'/>
+              </div>
+
+            <div>
+              <h4>Valor máximo:</h4>
+              <input
+              placeholder='Máx     R$100000,00'/>
+            </div>
+          </div>
+          
+          <div className='BuscaNome'>
+            <h4>Busca por Nomes:</h4>
+            <input
+            placeholder='Nome do Produto'/>
+          </div>
+        </div>
+      </div>
+    )
+  }
 }
 
 export default App;
