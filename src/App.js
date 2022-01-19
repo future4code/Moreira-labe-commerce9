@@ -1,22 +1,43 @@
 import React from 'react';
-import styled from styled-Component;
+import styled from 'styled-components';
 
+const Header = styled.div`
+background-color: blue;
+padding: 15px;
+margin: 20px;
+`
 
-// const Filtro = styled.div`
-// background-color: black;
-// display: Flex;
-// `
+const Filtro = styled.div`
+// background-color: red;
+display: Flex;
+flex-direction: row;
+justify-content: space-around;
+width: 100%;
+`
+const BuscaPreço = styled.div`
+display: Flex;
+border: 2px solid black;
+border-radius: 5px;
+padding: 5px;
+width: 100vh;
+`
+const BuscaNome = styled.div`
+border: 2px solid black;
+border-radius: 5px;
+padding: 5px;
+width: 100vh;
+`
 
 class App extends React.Component{
   render(){
     return(
       <div>
-        <div className='Header'>
+        <Header>
           <h1>Viajens Espaciais</h1>
-        </div>
+        </Header>
 
-        <div>
-            <div className='BuscaPreço'>
+        <Filtro>
+            <BuscaPreço>
               <div>
               <h4>Valor mínimo:</h4>
               <input
@@ -28,14 +49,14 @@ class App extends React.Component{
               <input
               placeholder='Máx     R$100000,00'/>
             </div>
-          </div>
+          </BuscaPreço>
           
-          <div className='BuscaNome'>
+          <BuscaNome>
             <h4>Busca por Nomes:</h4>
             <input
             placeholder='Nome do Produto'/>
-          </div>
-        </div>
+          </BuscaNome>
+        </Filtro>
       </div>
     )
   }
