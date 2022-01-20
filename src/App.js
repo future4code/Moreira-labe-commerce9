@@ -1,5 +1,7 @@
-import React from 'react';
+import React from 'react'
+import { Cart } from './components/Cart/Cart';
 import styled from 'styled-components';
+
 
 const Header = styled.div`
 background-color: blue;
@@ -44,15 +46,15 @@ width: 100px;
 margin: 1px;
 `
 
-class App extends React.Component{
-
+class App extends React.Component {
   state = {
     query:"",
     minPreço:"",
     maxPreço:""
 
   }
-  updateQuery = (event) =>{
+  
+   updateQuery = (event) =>{
      this.setState({
        query: event.target.value
      })     
@@ -71,12 +73,41 @@ class App extends React.Component{
         })     
           }
 
-
-
   render(){
-    return(
-      
-      <div>
+    const productsList = [
+      {
+        id: Date.now(),
+        name: 'Pacote ida e volta - Marte',
+        value: 150000
+      },
+      {
+        id: Date.now(),
+        name: 'Pacote ida e volta - Júpiter',
+        value: 220000
+      },
+      {
+        id: Date.now(),
+        name: 'Pacote ida e volta - Saturno',
+        value: 150000
+      },
+      {
+        id: Date.now(),
+        name: 'Pacote ida e volta - Urano',
+        value: 310000
+      },
+      {
+        id: Date.now(),
+        name: 'Pacote ida e volta - Netuno',
+        value: 450000
+      },
+    ]
+  
+    const mappedProductsList = productsList.map((product) => {
+      return <p>{product.name} = {product.value}</p>
+    })
+
+  return (
+     <div>
         <Header>
           🚀<h1>Viajens Espaciais</h1>🚀
         </Header>
@@ -137,6 +168,8 @@ class App extends React.Component{
         </Filtro>
       </div>
     )
+  );
+  
   }
 }
 
