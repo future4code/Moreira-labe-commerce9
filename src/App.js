@@ -1,6 +1,8 @@
 import React from 'react'
 import { Cart } from './components/Cart/Cart';
 import styled from 'styled-components';
+import CardCarrinho from './components/compras/CardCarrinho';
+import CardsProdutos from './components/compras/CardProdutos';
 
 
 const Header = styled.div`
@@ -46,13 +48,15 @@ width: 100px;
 margin: 1px;
 `
 
+
 class App extends React.Component {
   state = {
     query:"",
     minPreço:"",
-    maxPreço:""
-
+    maxPreço:"",
+    carrinho: []
   }
+
   
    updateQuery = (event) =>{
      this.setState({
@@ -72,39 +76,18 @@ class App extends React.Component {
       maxPreço: event.target.value
         })     
           }
-
-  render(){
-    const productsList = [
-      {
-        id: Date.now(),
-        name: 'Pacote ida e volta - Marte',
-        value: 150000
-      },
-      {
-        id: Date.now(),
-        name: 'Pacote ida e volta - Júpiter',
-        value: 220000
-      },
-      {
-        id: Date.now(),
-        name: 'Pacote ida e volta - Saturno',
-        value: 150000
-      },
-      {
-        id: Date.now(),
-        name: 'Pacote ida e volta - Urano',
-        value: 310000
-      },
-      {
-        id: Date.now(),
-        name: 'Pacote ida e volta - Netuno',
-        value: 450000
-      },
-    ]
+          addCarrinho = (viagemEscolhida) =>{
   
-    const mappedProductsList = productsList.map((product) => {
-      return <p>{product.name} = {product.value}</p>
-    })
+            const novaCompra = viagemEscolhida
+            
+            
+            const copiaNovaCompra = [...this.state.carrinho, novaCompra] 
+           
+            this.setState({carrinho: copiaNovaCompra}) 
+           
+          }
+  render(){
+    
 
   return (
      <div>
@@ -166,9 +149,18 @@ class App extends React.Component {
           {/* </div> */}
 
         </Filtro>
+
+          <div>
+
+            <CardsProdutos viagens = {this.state.productsList}   addcarrinho = {this.addCarrinho}/>
+            <div>Carrinho de Compras</div>
+            <CardCarrinho teste = {this.state.carrinho} />
+
+         </div>
+            <Cart/>
       </div>
     )
-  );
+  
   
   }
 }
