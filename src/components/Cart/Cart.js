@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 
 const CartScreen = styled.section`
-    background-color: #b87af6;
+    background-color: #aaa;
     display: flex;
     justify-content: space-around
     

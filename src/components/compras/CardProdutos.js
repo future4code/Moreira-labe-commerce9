@@ -1,38 +1,25 @@
-
-import React from 'react';
 import styled from 'styled-components';
+import React from 'react';
 
-const CardsHome = styled.div`
-    display: flex;
-    justify-content: space-between;
-    flex-wrap:wrap;
-    /* grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    margin: 5%; */
+const Img = styled.img`
+    width: 200px;
+    height: 200px;
 `
 
 class CardsProdutos extends React.Component {
     render() {
         return (
             <section>
-            <CardsHome>
-                   
-            <img src={this.props.imageUrl} alt='Imagem do planeta' /> 
-            
-            
-                <h3>{this.props.name}</h3>
-                <p>{this.props.value}</p>
-            
-           
-            
-            
-        </CardsHome>
-        
-         </section>
+              
+                    <Img src={this.props.imageurl} alt='Imagem do planeta' />            
+                    <p>{this.props.name}</p>
+                    <p>R$ {this.props.value}</p>                        
+                      
+            </section>
         );
-      }
+    }
     
-    } 
+} 
     
     
 
