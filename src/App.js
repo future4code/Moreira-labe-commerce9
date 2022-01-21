@@ -54,7 +54,46 @@ class App extends React.Component {
     query:"",
     minPreço:"",
     maxPreço:"",
-    carrinho: []
+    productsList:[
+      {
+        id: 1,
+        name: 'Pacote ida e volta - Lua',
+        value: 90000,
+        qtde: 1
+      },
+      {
+        id: 2,
+        name: 'Pacote ida e volta - Marte',
+        value: 150000,
+        qtde: 1
+      },
+      {
+        id: 3,
+        name: 'Pacote ida e volta - Júpiter',
+        value: 220000,
+        qtde: 1
+      },
+      {
+        id: 4,
+        name: 'Pacote ida e volta - Saturno',
+        value: 150000,
+        qtde: 1
+      },
+      {
+        id: 5,
+        name: 'Pacote ida e volta - Urano',
+        value: 310000,
+        qtde: 1
+      },
+      {
+        id: 6,
+        name: 'Pacote ida e volta - Netuno',
+        value: 450000,
+        qtde: 1
+      },
+    ],
+    carrinho: [],
+    ordem: "crescente"
   }
 
   
@@ -75,20 +114,34 @@ class App extends React.Component {
     this.setState({
       maxPreço: event.target.value
         })     
-          }
-          addCarrinho = (viagemEscolhida) =>{
-  
-            const novaCompra = viagemEscolhida
-            
-            
-            const copiaNovaCompra = [...this.state.carrinho, novaCompra] 
-           
-            this.setState({carrinho: copiaNovaCompra}) 
-           
-          }
-  render(){
-    
+  }
 
+  addCarrinho = (viagemEscolhida) =>{
+
+    let novaCompra = viagemEscolhida
+    
+    // if(this.state.carrinho.length === 0){
+    //    novaCompra = viagemEscolhida
+    // } else {
+    //    novaCompra = this.state.carrinho.map((produto)=>{
+    //       if(produto.id === viagemEscolhida.id){
+    //         return {...produto , qtde: produto.qtde+1} ;
+    //       } 
+    //   })
+    // }
+
+    const copiaNovaCompra = [...this.state.carrinho, novaCompra]
+    this.setState({carrinho: copiaNovaCompra}) 
+  }
+
+  onChangeFilter = (event) => {
+    this.setState({ordem: event.target.value})
+  }
+          
+  render(){
+    let produtos = []
+   
+    
   return (
      <div>
         <Header>
@@ -125,39 +178,49 @@ class App extends React.Component {
             onChange={this.updateQuery}
             placeholder='Nome do Produto'/>
             <Button>Pesquisar</Button>
-            {/* {this.state.query} */}
+             {this.state.query} 
           </BuscaNome>
 
-          {/* <div>
-            {this.state.jobs
-            .filter(job =>{
-              return job.titulo.toLowerCase().includes(this.state.query.toLowerCase())
-              || job.descrição.toLowerCase().includes(this.state.query.toLowerCase())
-            })
-            .filter(job =>{
-              return this.state.minPreço === "" || job.preço >= this.state.minPreço
-            })
-            .filter(job =>{
-              return this.state.maxPreço === "" || job.preço <= this.state.maxPreço
-            })
-            .map(job => {
-              return 
-              <div>
-                key={job.id} job = {job}
-              </div>
-            })} */}
-          {/* </div> */}
+         
 
         </Filtro>
 
+            <div>
+              <select value={this.state.ordem} onChange={this.onChangeFilter}>
+              <option value="crescente">Crescente</option>
+              <option value="decrescente">Decrescente</option>
+              </select>
+            </div>
           <div>
 
-            <CardsProdutos viagens = {this.state.productsList}   addcarrinho = {this.addCarrinho}/>
-            <div>Carrinho de Compras</div>
-            <CardCarrinho teste = {this.state.carrinho} />
+          {this.state.productsList
+            .filter(produto =>{
+              return produto.name.toLowerCase().includes(this.state.query.toLowerCase())
+              
+            })
+            .filter(produto =>{
+              return this.state.minPreço === "" || produto.value >= Number(this.state.minPreço)
+            })
+            .filter(produto =>{
+              return this.state.maxPreço === "" || produto.value <= Number(this.state.maxPreço)
+            }).sort((a,b)=>{
+              if(this.state.ordem === "crescente"){
+                return a.value-b.value
+              }else{
+                return b.value-a.value
+              }
+            })
+            .map(produto => {
+              return  <div><CardsProdutos  name={produto.name} value={produto.value} imageurl={produto.imageUrl} viagens = {produto}   addcarrinho = {this.addCarrinho}/>
+              <button onClick={()=>this.addCarrinho(produto)}>Adicionar ao Carrinho</button></div>
+            })} 
+
+          
+          <div>Carrinho de Compras</div>
+        
 
          </div>
-            <Cart/>
+            <Cart carrinho = {this.state.carrinho}/>
       </div>
     )
   

@@ -17,6 +17,20 @@ export class Cart extends React.Component {
       <CartScreen>
         <SubCart title={"Produtos adicionados"} product/>
         <SubCart title={"Valor final"}/>
+        
+        {this.props.carrinho.map(viagem => {
+                return (
+                    <div>
+                    
+                        <div>
+                            <h3>{viagem.name}</h3>
+                            <p>{viagem.value}</p>
+                            <p>{viagem.qtde}</p>
+                        </div>
+          
+                    </div>
+                )
+            })}
       </CartScreen>
     );
   }
