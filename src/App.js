@@ -3,8 +3,6 @@ import { Cart } from './components/Cart/Cart';
 import styled from 'styled-components';
 import CardsProdutos from './components/compras/CardProdutos';
 
-
-
 const Header = styled.div`
 background-image: url('https://t5z6q4c2.rocketcdn.me/wp-content/uploads/2020/03/universo-o-que-e-origem-principais-elementos-e-curiosidade-2.jpg');
 padding: 5px;
@@ -12,6 +10,7 @@ margin: 5px;
 text-align: center;
 color: #D3D3D3;
 text-shadow:3px 4px 2px #aaa
+
 `
 
 const Filtro = styled.div`
@@ -61,20 +60,22 @@ const SelecaoCards = styled.div`
     padding: 10px;
     margin width: 10%;
     flex-wrap: wrap;
-    flex-direction: row;
-    
-    
+    flex-direction: row;      
 `
 
 const EstilizaBotao = styled.div`
   text-align: center;
   margin-bottom: 10px; 
   border-radius: 10px 10px 1px 1px;
-  margin: 0 auto;
- 
-  
+  margin: 0 auto; 
 `
-
+const Ordenar = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-right: 27px;
+  align-items: baseline;
+`
 
 class App extends React.Component {
   state = {
@@ -130,52 +131,67 @@ class App extends React.Component {
   }
 
   
-   updateQuery = (event) =>{
-     this.setState({
-       query: event.target.value
-     })     
-        }
+  updateQuery = (event) =>{
+    this.setState({
+      query: event.target.value
+    })     
+  }
 
   updateMinPreço = (event) =>{
-  this.setState({
-   minPreço: event.target.value
-      })     
-        }
-
+    this.setState({
+      minPreço: event.target.value
+    })     
+  }
 
   updateMaxPreço = (event) =>{
     this.setState({
       maxPreço: event.target.value
-        })     
+    })     
   }
 
-  addCarrinho = (viagemEscolhida) =>{
+  addCarrinho = (travelId) => {
+    const travelInCart = this.state.carrinho.find(travel => travelId.id === travel.id);
+    if (travelInCart){
+      const novoCarrinho = this.state.carrinho.map(travel => {
+        if (travelId.id === travel.id) {
+          return{
+            ...travel,
+            qtde: travel.qtde + 1
+          }
+        }
+        return travel
+      })
 
-    let novaCompra = viagemEscolhida
-    
+      this.setState({
+        carrinho: novoCarrinho
+      })
+    } else {
+      const travelToAdd = this.state.productsList.find(travel => travelId.id === travel.id)
 
-    const copiaNovaCompra = [...this.state.carrinho, novaCompra]
-    this.setState({carrinho: copiaNovaCompra}) 
-  }
+      const newProductsInCart = [...this.state.carrinho, {...travelToAdd, qtde: 1}]
+
+      this.setState({
+        carrinho: newProductsInCart
+      })
+    }
+  };
 
   onChangeFilter = (event) => {
     this.setState({ordem: event.target.value})
   }
           
   render(){
-    let produtos = []
-   
-    
+
   return (
      <div>
         <Header>
-          🚀<h1>Viajens Espaciais</h1>🚀
+          🚀<h1>Viagens Espaciais</h1>🚀
         </Header>
 
         <Filtro>
-            <BuscaPreço>
+          <BuscaPreço>
             <div>
-              <label for= "nome">Valor mínimo: </label>
+              <label>Valor mínimo: </label>
               <input
               type="number" id='nome'
               value={this.state.minPreço}
@@ -184,7 +200,7 @@ class App extends React.Component {
             </div>
           
             <div>
-              <label for= "nome2"> Valor máximo: </label>
+              <label> Valor máximo: </label>
               <input
               type="number" id='nome2'
               value={this.state.maxPreço}
@@ -204,51 +220,50 @@ class App extends React.Component {
             <Button>Pesquisar</Button>
              {this.state.query} 
           </BuscaNome>
-
-         
-
         </Filtro>
 
-            <div>
-              <select value={this.state.ordem} onChange={this.onChangeFilter}>
-              <option value="crescente">Crescente</option>
-              <option value="decrescente">Decrescente</option>
-              </select>
-            </div>
+        <Ordenar>
+          <p>Ordenar:  </p>
+          <select value={this.state.ordem} onChange={this.onChangeFilter}>
+          <option value="crescente">Crescente</option>
+          <option value="decrescente">Decrescente</option>
+          </select>
+        </Ordenar>
 
-          <SelecaoCards>
+        <SelecaoCards>
 
-            {this.state.productsList
-              .filter(produto =>{
-                return produto.name.toLowerCase().includes(this.state.query.toLowerCase())
-                
-              })
-              .filter(produto =>{
-                return this.state.minPreço === "" || produto.value >= Number(this.state.minPreço)
-              })
-              .filter(produto =>{
-                return this.state.maxPreço === "" || produto.value <= Number(this.state.maxPreço)
-              }).sort((a,b)=>{
-                if(this.state.ordem === "crescente"){
-                  return a.value-b.value
-                }else{
-                  return b.value-a.value
-                }
-              })
-              .map(produto => {
-                return  <EstilizaBotao><CardsProdutos  name={produto.name} value={produto.value} imageurl={produto.imageUrl} viagens = {produto}   addcarrinho = {this.addCarrinho}/>
-                <button onClick={()=>this.addCarrinho(produto)}>Adicionar ao Carrinho</button></EstilizaBotao>
-              })} 
+          {this.state.productsList
+            .filter(produto =>{
+              return produto.name.toLowerCase().includes(this.state.query.toLowerCase())
+              
+            })
+            .filter(produto =>{
+              return this.state.minPreço === "" || produto.value >= Number(this.state.minPreço)
+            })
+            .filter(produto =>{
+              return this.state.maxPreço === "" || produto.value <= Number(this.state.maxPreço)
+            }).sort((a,b)=>{
+              if(this.state.ordem === "crescente"){
+                return a.value-b.value
+              }else{
+                return b.value-a.value
+              }
+            })
+            .map(produto => {
+              return  (
+                <EstilizaBotao>
+                  <CardsProdutos  name={produto.name} value={produto.value} imageurl={produto.imageUrl} viagens = {produto}   addcarrinho = {this.addCarrinho}/>
+                  <button onClick={()=>this.addCarrinho(produto)}>Adicionar ao Carrinho</button>
+                </EstilizaBotao>
+              )
+            })} 
 
-          </SelecaoCards>
-          <div>Carrinho de Compras</div>
-        
-              <div><Cart carrinho = {this.state.carrinho} /></div>
-        
-     </div>
+        </SelecaoCards>
+        <div>
+          <Cart carrinho = {this.state.carrinho} />
+        </div>     
+      </div>
     )
-  
-  
   }
 }
 
